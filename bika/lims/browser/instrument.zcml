@@ -75,7 +75,7 @@
         class="bika.lims.browser.instrument.InstrumentQCFailuresViewlet"
         manager="plone.app.layout.viewlets.interfaces.IAboveContent"
         template="templates/instrument_qc_failures_viewlet.pt"
-        permission="zope2.View"
+        permission="bika.lims.permissions.AddAnalysisRequest"
         layer="bika.lims.interfaces.IBikaLIMS"
     />
 
