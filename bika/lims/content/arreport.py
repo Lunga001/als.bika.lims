@@ -20,7 +20,6 @@ from Products.Archetypes.references import HoldingReference
 from bika.lims.config import PROJECTNAME
 from bika.lims.content.bikaschema import BikaSchema
 
-
 schema = BikaSchema.copy() + Schema((
     ReferenceField('AnalysisRequest',
        allowed_types=('AnalysisRequest',),
