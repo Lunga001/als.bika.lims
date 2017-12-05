@@ -12,12 +12,14 @@
 from AccessControl import ClassSecurityInfo
 from Products.ATExtensions.ateapi import RecordsField
 from Products.Archetypes import atapi
+from Products.Archetypes.atapi import StringWidget
 from Products.Archetypes.public import ReferenceField, \
         StringField, Schema, BaseFolder
 from plone.app.blob.field import BlobField
 from Products.Archetypes.references import HoldingReference
 from bika.lims.config import PROJECTNAME
 from bika.lims.content.bikaschema import BikaSchema
+
 
 schema = BikaSchema.copy() + Schema((
     ReferenceField('AnalysisRequest',
@@ -29,6 +31,11 @@ schema = BikaSchema.copy() + Schema((
     BlobField('Pdf',
     ),
     StringField('Html',
+        widget=StringWidget(
+            visible={
+                'view': 'invisible',
+            },
+        ),
     ),
     BlobField('CSV',
     ),
