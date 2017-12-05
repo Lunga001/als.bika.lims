@@ -940,7 +940,8 @@ class AnalysisRequestPublishView(BrowserView):
         debug_mode = App.config.getConfiguration().debug_mode
         wf = getToolByName(self.context, 'portal_workflow')
 
-        #coanr = self.request.form.get('coanr', None)
+        coanr = self.current_certificate_number()
+        coanr = self.request.form.get('coanr', coanr)
 
         # The AR can be published only and only if allowed
         uc = getToolByName(self.context, 'uid_catalog')
@@ -962,7 +963,6 @@ class AnalysisRequestPublishView(BrowserView):
 
         for ar in ars:
 
-            coanr = self.current_certificate_number()
             # Generate in each relevant AR, a new ARReport
             reportid = ar.generateUniqueId('ARReport')
             report = _createObjectByType("ARReport", ar, reportid)
