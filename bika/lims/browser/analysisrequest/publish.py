@@ -940,8 +940,7 @@ class AnalysisRequestPublishView(BrowserView):
         debug_mode = App.config.getConfiguration().debug_mode
         wf = getToolByName(self.context, 'portal_workflow')
 
-        coanr = self.current_certificate_number()
-        coanr = self.request.form.get('coanr', coanr)
+        coanr = self.request.form.get('coanr', None)
 
         # The AR can be published only and only if allowed
         uc = getToolByName(self.context, 'uid_catalog')
