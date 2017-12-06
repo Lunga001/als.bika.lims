@@ -6,7 +6,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '3.2.0.170808'
+version = '3.2.0.171205'
 
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read() + "\n"
