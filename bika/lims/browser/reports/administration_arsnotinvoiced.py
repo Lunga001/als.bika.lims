@@ -16,6 +16,8 @@ from bika.lims.utils import formatDateQuery, formatDateParms
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface import implements
 
+from bika.lims.utils import to_utf8
+
 
 class Report(BrowserView):
     implements(IViewView)
@@ -132,5 +134,39 @@ class Report(BrowserView):
             'datalines': datalines,
             'footings': footlines}
 
-        return {'report_title': t(headings['header']),
-                'report_data': self.template()}
+        if self.request.get('output_format', '') == 'CSV':
+            import csv
+            import StringIO
+            import datetime
+
+            fieldnames = [
+                _('Client'),
+                _('Request'),
+                _('Sample type'),
+                _('Sample point'),
+                _('Published'),
+                _('Amount'),
+            ]
+            output = StringIO.StringIO()
+            dw = csv.DictWriter(output, fieldnames=fieldnames)
+            dw.writerow(dict((fn, fn) for fn in fieldnames))
+            for row in datalines:
+                dw.writerow({
+                        'Client': row[0]['value'],
+                        'Request': row[1]['value'],
+                        'Sample type': row[2]['value'],
+                        'Sample point': row[3]['value'],
+                        'Published': row[4]['value'],
+                        'Amount': row[5]['value'],
+                        })
+            report_data = output.getvalue()
+            output.close()
+            date = datetime.datetime.now().strftime("%Y%m%d%H%M")
+            setheader = self.request.RESPONSE.setHeader
+            setheader('Content-Type', 'text/csv')
+            setheader("Content-Disposition",
+                    "attachment;filename=\"administration_arsnotinvoiced%s.csv\"" % date)
+            self.request.RESPONSE.write(report_data)
+        else:
+            return {'report_title': t(headings['header']),
+                    'report_data': self.template()}
